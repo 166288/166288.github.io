@@ -24,16 +24,16 @@
       </model>
     </item>
     <item>
-      <title>DSM 7.2.1-69057</title>
-      <MajorVer>7</MajorVer>
+      <title>DSM 6.2.3-25426</title>
+      <MajorVer>6</MajorVer>
       <MinorVer>2</MinorVer>
       <BuildPhase>0</BuildPhase>
-      <BuildNum>69057</BuildNum>
+      <BuildNum>25426</BuildNum>
       <BuildDate>2023/10/12</BuildDate>
-      <ReqMajorVer>7</ReqMajorVer>
+      <ReqMajorVer>6</ReqMajorVer>
       <ReqMinorVer>0</ReqMinorVer>
       <ReqBuildPhase>0</ReqBuildPhase>
-      <ReqBuildNum>41890</ReqBuildNum>
+      <ReqBuildNum>25426</ReqBuildNum>
       <ReqBuildDate>2021/06/25</ReqBuildDate>
       <model>
         <mUnique>synology_apollolake_1019+</mUnique>
