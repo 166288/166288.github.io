@@ -84,6 +84,7 @@
     .page-enter { animation: fadeInUp 0.5s ease both; }
     .page-enter-delay { animation: fadeInUp 0.5s ease 0.1s both; }
 
+    /* ===== 头像动效：父容器浮动，虚线圈旋转，头像本身体验光晕 ===== */
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50%      { transform: translateY(-6px); }
@@ -92,15 +93,26 @@
       from { transform: rotate(0deg); }
       to   { transform: rotate(360deg); }
     }
+
+    /* 父容器：负责上下浮动 */
     .avatar-float {
       animation: float 4s ease-in-out infinite;
+    }
+
+    /* 虚线圈：只负责旋转（因为它处在 float 的父容器里，会自动跟着上下浮） */
+    .avatar-ring {
+      animation: spin-slow 24s linear infinite;
+    }
+
+    /* 头像本体：悬停光晕 */
+    .avatar-img {
       transition: box-shadow 0.4s ease;
     }
-    .avatar-float:hover {
+    .avatar-img:hover {
       box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.12),
                   0 20px 40px -12px rgba(59, 130, 246, 0.35);
     }
-    .avatar-ring { animation: spin-slow 24s linear infinite; }
+
     .nav-card:active { transform: scale(0.97) !important; }
 
     @media (prefers-reduced-motion: reduce) {
@@ -180,10 +192,13 @@
         <!-- 左侧：头像 + 天气 -->
         <div class="lg:col-span-4 flex flex-col items-center gap-8">
 
-          <!-- 头像（图片版，带 onerror 兜底） -->
-          <div class="relative w-32 h-32 md:w-40 md:h-40">
+          <!-- 头像（父容器浮动 / 虚线圈旋转 / 头像本身体验 hover 光晕） -->
+          <div class="avatar-float relative w-32 h-32 md:w-40 md:h-40">
+            <!-- 虚线圈：跟着父容器上下浮动，同时自己旋转 -->
             <div class="avatar-ring absolute inset-0 rounded-full border border-dashed border-blue-300 dark:border-blue-700/50 scale-110"></div>
-            <div class="avatar-float relative w-full h-full rounded-full overflow-hidden shadow-lg cursor-pointer bg-blue-600">
+
+            <!-- 头像本体 -->
+            <div class="avatar-img relative w-full h-full rounded-full overflow-hidden shadow-lg cursor-pointer bg-blue-600">
               <!-- 兜底字母：图片加载失败时露出 -->
               <span class="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold select-none">R</span>
               <img src="./avatar.png"
@@ -342,13 +357,11 @@
             setTimeout(() => { this.wechatCopied = false; }, 1500);
           };
 
-          // 优先用现代 Clipboard API（要求 HTTPS 或 localhost）
           if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(id).then(done).catch(() => {
               this.fallbackCopy(id, done);
             });
           } else {
-            // HTTP 环境或旧浏览器兜底
             this.fallbackCopy(id, done);
           }
         },
